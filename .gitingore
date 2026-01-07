@@ -1,5 +1,6 @@
 __pycache__/
 *.pyc
-.out
-*DUMP*
+*.out
+*FCIDUMP_chol*
 *.npz
+*.bin
