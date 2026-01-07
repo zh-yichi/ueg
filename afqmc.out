@@ -1,0 +1,81 @@
+# Hostname: sharmagroup-rn
+# System Type: Linux
+# Machine Type: x86_64
+# Processor: x86_64
+# Using GPU.
+# System: Linux
+# Node Name: sharmagroup-rn
+# Release: 6.14.0-37-generic
+# Version: #37~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Nov 20 10:25:38 UTC 2
+# Machine: x86_64
+# Processor: x86_64
+# Hostname: sharmagroup-rn
+# System Type: Linux
+# Machine Type: x86_64
+# Processor: x86_64
+# Using GPU.
+# System: Linux
+# Node Name: sharmagroup-rn
+# Release: 6.14.0-37-generic
+# Version: #37~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Nov 20 10:25:38 UTC 2
+# Machine: x86_64
+# Processor: x86_64
+# Number of MPI ranks: 1
+#
+# norb: 19
+# nelec: (7, 7)
+#
+# n_eql: 3
+# n_prop_steps: 50
+# n_ene_blocks: 2
+# n_sr_blocks: 5
+# n_blocks: 40
+# n_walkers: 200
+# n_batch: 1
+# seed: 2
+# walker_type: rhf
+# trial: ccsd_pt
+# dt: 0.005
+# free_projection: False
+# use_gpu: True
+# n_exp_terms: 6
+# orbital_rotation: True
+# do_sr: True
+# symmetry: False
+# save_walkers: False
+# ene0: 0.0
+# LNO: False
+# orbE: 0
+# maxError: 0.001
+#
+walkers type <class 'jaxlib._jax.ArrayImpl'>
+# Propagating with 200 walkers
+# Equilibration sweeps:
+#   Iter 	 <t> 	 	 <e0> 	 	 <e1> 	 	   energy 	 Walltime
+      0 	 0.000000 	 8.491481 	 -0.276499 	   8.214982 	 2.43
+      1 	 0.078900 	  8.219235 	 1.045711 	   8.213102 	 10.61
+      2 	 0.080292 	  8.214546 	 1.068534 	   8.213061 	 18.44
+      3 	 0.080608 	  8.213263 	 1.074013 	   8.213144 	 24.39
+#
+# Sampling sweeps:
+#  Iter 	    energy 	 error 	 	 Walltime
+     4 	 	  8.213399 	 0.000117 	  32.51
+     8 	 	  8.213343 	 0.000075 	  37.53
+    12 	 	  8.213401 	 0.000068 	  42.56
+    16 	 	  8.213341 	 0.000074 	  47.58
+    20 	 	  8.213370 	 0.000069 	  52.60
+    24 	 	  8.213322 	 0.000064 	  57.63
+    28 	 	  8.213303 	 0.000058 	  62.64
+    32 	 	  8.213300 	 0.000054 	  67.66
+    36 	 	  8.213306 	 0.000052 	  72.68
+# Number of outliers in post: 0 
+# Final Results:
+# <e0> = <ehf> in PT theory
+# h0 = -5.11207587
+# <t> = 0.079998 +/- 0.000048
+# <e0> = 8.215460 +/- 0.000122
+# <e1> = 1.064035 +/- 0.000788
+# AFQMC/CCSD_PT energy (covariance): 8.213313 +/- 0.000049
+# remove outliers in direct sampling:  0
+# AFQMC/CCSD_PT energy (direct obs): 8.213326 +/- 0.000049
+# total run time: 76.44

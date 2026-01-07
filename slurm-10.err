@@ -1,0 +1,7 @@
+Overwritten attributes  energy_nuc get_ovlp get_hcore  of <class 'pyscf.scf.hf.RHF'>
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: got SIGCONT
+slurmstepd-localhost: error: *** STEP 10.0 ON localhost CANCELLED AT 2026-01-05T22:14:09 ***
+slurmstepd-localhost: error: *** JOB 10 ON localhost CANCELLED AT 2026-01-05T22:14:09 ***
+srun: forcing job termination
+srun: error: localhost: task 0: Terminated
