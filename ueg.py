@@ -341,8 +341,8 @@ class my_ueg:
 
     def get_kpts(self, gamma=2, with_zero=True):
         '''
-        get the k-points in a sphere
-        by k_cut = gamma * k_fermi
+        get the k-points in a sphere by k_cut = gamma * k_fermi
+        ordered by 0,...,k,-k,... with the length increasing
         '''
         rs = self.rs
         Np = sum(self.nelec)
@@ -355,6 +355,24 @@ class my_ueg:
         kpts = npts * (2*np.pi/L)
 
         return kpts
+    
+    def pw2real(self, kpts):
+        '''
+        get the unitary transformation that
+        transforms plane-wave basis to cos, sin basis.
+        kpts ordered in +k, -k pairs:
+        [coskx,  =  1/sqrt(2)[[ 1, 1]  [exp(ikx),
+        sinkx]               [-i, i]]  exp(-ikx)]
+        '''
+        nkpts = kpts.shape[0]
+        blk = np.array([[1.0, 1.0], [-1.0j, 1.0j]], dtype=np.complex128) / np.sqrt(2)
+        nblks = (nkpts - 1) // 2
+        u = np.kron(np.eye(nblks), blk)
+        u = np.block([
+            [np.array([[1.0]]), np.zeros((1, 2*nblks))],
+            [np.zeros((2*nblks, 1)), u]
+            ])
+        return u
     
     def madelung(self):
         '''

@@ -4,3 +4,5 @@ __pycache__/
 *FCIDUMP_chol*
 *.npz
 *.bin
+*.json
+*.env
