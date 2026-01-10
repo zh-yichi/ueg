@@ -131,7 +131,7 @@ class my_ueg:
         '''
         get the unitary transformation that
         transforms plane-wave basis to cos, sin basis.
-        kpts ordered in +k, -k pairs:
+        kpts are ordered in +k, -k pairs, s.t. each block:
         [coskx]  =  1/sqrt(2)[[ 1, 1]]  [exp(+ikx)]
         [sinkx]              [[-i, i]]  [exp(-ikx)]
         with_zero: add gamma point
@@ -139,7 +139,7 @@ class my_ueg:
         if nkpts is None:
             nkpts = self.nkpts
 
-        blk = np.array([[-1.0j, 1.0j],[1.0, 1.0]], dtype=np.complex128) / np.sqrt(2)
+        blk = np.array([[1.0, 1.0], [-1.0j, 1.0j]], dtype=np.complex128) / np.sqrt(2)
         
         if with_zero:
             nblks = (nkpts - 1) // 2
@@ -265,13 +265,11 @@ class my_ueg:
         
         cderi = cderi.transpose(1,2,0)
         cderi = einsum('pr,rsj,sq->pqj', uk.conj(), cderi,uk.T, optimize=True)
-        cderi = einsum('pqj,jg->pqg', cderi, uq.T, optimize=True)
+        cderi = einsum('pqj,jg->pqg', cderi, uq.T, optimize=True).transpose(2,0,1).real
 
-        return cderi.transpose(2,0,1).real
+        return  lib.pack_tril(cderi) # -> (nq,nk*(nk+1)/2) save the lower triangular
     
-    def prep_afqmc(self,
-                   mycc,
-                   chol_cut=1e-6,
+    def prep_afqmc(self, mycc,
                    amp_file="amplitudes.npz",
                    chol_file="FCIDUMP_chol"):
         
@@ -288,24 +286,22 @@ class my_ueg:
         np.savez(amp_file, t1=t1, t2=t2)
 
         # calculate cholesky integrals
-        print("# Calculating Cholesky integrals")
+        print("# Preparing AFQMC_PT for Homogeneous Electron Gas")
         
         h0 = mf.energy_nuc()
         h1 = mf.get_hcore()
-        h2 = mf._eri.reshape(nao**2,nao**2)
-        chol = pyscf_interface.modified_cholesky(h2,chol_cut)
-        chol = chol.reshape((-1, nao, nao))
+        chol = lib.unpack_tril(mf._cderi)
         nchol = chol.shape[0]
 
         v0 = 0.5 * einsum("gpr,grq->pq", chol, chol, optimize="optimal")
         h1_mod = h1 - v0
         chol = chol.reshape((chol.shape[0], -1))
 
-        print("# Finished calculating Cholesky integrals#")
+        # print("# Finished calculating Cholesky integrals#")
         print("# Size of the correlation space:")
         print(f"# Number of electrons: {nelec}")
-        print(f"# Number of basis functions: {nao}")
-        print(f"# Number of Cholesky vectors: {nchol}")
+        print(f"# Number of basis (k-points): {nao}")
+        print(f"# Number of CholVecs (q-points): {nchol}")
 
         
         pyscf_interface.write_dqmc(
