@@ -270,8 +270,8 @@ class my_ueg:
         return  lib.pack_tril(cderi) # -> (nq,nk*(nk+1)/2) save the lower triangular
     
     def prep_afqmc(self, mycc,
-                   amp_file="amplitudes.npz",
-                   chol_file="FCIDUMP_chol"):
+                   amp_file = "amplitudes.npz",
+                   chol_file = "FCIDUMP_chol"):
         
         from ad_afqmc import pyscf_interface
 
@@ -280,10 +280,16 @@ class my_ueg:
         nelec = mol.nelec
         nao = mol.nao
         
+        # if pt_or_ci.lower() == 'pt':
         t1 = np.array(mycc.t1)
         t2 = mycc.t2
         t2 = t2.transpose(0, 2, 1, 3)
         np.savez(amp_file, t1=t1, t2=t2)
+        # elif pt_or_ci.lower() == 'ci':
+        #     t1 = np.array(mycc.t1)
+        #     t2 = mycc.t2.transpose(0, 2, 1, 3)
+        #     ci2 = t2 + einsum("ia,jb->iajb", t1, t1)
+        #     np.savez(amp_file, ci1=t1, ci2=ci2)
 
         # calculate cholesky integrals
         print("# Preparing AFQMC_PT for Homogeneous Electron Gas")
