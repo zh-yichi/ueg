@@ -247,6 +247,32 @@ class my_ueg:
                     else:
                         cderi[g,p,q] = 0.
         return cderi
+    
+    # def get_cderi_pw_faster(self, npts=None, mpts=None, qpts=None):
+    #     '''L_{q(m),k1(n1),k3(n3)} = delta(n1-n3,m)*V(q)^1/2'''
+        
+    #     if npts is None:
+    #         npts = self.get_npts()
+    #     if mpts is None:
+    #         mpts = self.get_mpts()
+    #     if qpts is None:
+    #         qpts = self.get_qpts()
+        
+    #     m_dict = {tuple(m): g for g, m in enumerate(mpts)}
+    #     cderi = np.zeros((len(mpts), len(npts), len(npts)))
+    #     vq = np.zeros(len(mpts))
+
+    #     for g in range(len(mpts)):
+    #         q2 = np.dot(qpts[g], qpts[g])
+    #         vq[g] = np.sqrt(4 * np.pi / q2 / self.volume)
+
+    #     for p,n1 in enumerate(npts):
+    #         for q,n3 in enumerate(npts):
+    #             key = tuple(n1 - n3)
+    #             g = m_dict.get(key, None)
+    #             if g is not None:
+    #                 cderi[g, p, q] = vq[g]
+    #     return cderi
 
     def get_cderi_real(self, cderi=None, uk=None, uq=None):
         '''
@@ -254,7 +280,7 @@ class my_ueg:
         '''
 
         if cderi is None:
-            cderi = self.get_cderi_pw()
+            cderi = self.get_cderi_pw() #get_cderi_pw()
         
         nqpts = cderi.shape[0]
         
@@ -323,3 +349,33 @@ class my_ueg:
         )
 
         return None
+
+
+class my_ueg_faster(my_ueg):
+
+    def get_cderi_pw(self, npts=None, mpts=None, qpts=None):
+        '''L_{q(m),k1(n1),k3(n3)} = delta(n1-n3,m)*V(q)^1/2'''
+        
+        if npts is None:
+            npts = self.get_npts()
+        if mpts is None:
+            mpts = self.get_mpts()
+        if qpts is None:
+            qpts = self.get_qpts()
+        
+        m_dict = {tuple(m): g for g, m in enumerate(mpts)}
+        cderi = np.zeros((len(mpts), len(npts), len(npts)))
+        vq = np.zeros(len(mpts))
+
+        for g in range(len(mpts)):
+            q2 = np.dot(qpts[g], qpts[g])
+            vq[g] = np.sqrt(4 * np.pi / q2 / self.volume)
+
+        for p,n1 in enumerate(npts):
+            for q,n3 in enumerate(npts):
+                key = tuple(n1 - n3)
+                g = m_dict.get(key, None)
+                if g is not None:
+                    cderi[g, p, q] = vq[g]
+                    
+        return cderi
