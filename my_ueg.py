@@ -49,6 +49,7 @@ class my_ueg:
         unq_npts = unq_npts[np.argsort(np.sum(unq_npts**2, axis=1))]
         sort_npts = [[unq_npts[i],-1*unq_npts[i]] for i in range(1,len(unq_npts))]
         sort_npts = np.vstack(sort_npts)
+        # sort_npts = sort_npts[1:]
         
         if with_zero:
             sort_npts = np.vstack([[0,0,0],sort_npts])
